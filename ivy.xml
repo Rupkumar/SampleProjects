@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<ivy-module version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+    <info organisation="brs" module="kafka-sample"   />
+    <configurations>
+        <conf name="default" description="Default configuration"/>
+        <conf name="runtime" description="The configuration needed for runtime" extends="default"/>
+        <conf name="compile" description="The configuration needed to compile" extends="runtime"/>
+        <conf name="test" description="The configuration needed to run the tests" extends="compile"/>
+        <conf name="sources" description="Source files configuration"/>
+    </configurations>  
+    <dependencies>
+    <!--spring-->
+		<dependency org="org.springframework" name="spring-context" rev="4.2.+">
+			<exclude module="commons-logging"/>
+			<exclude module="jboss-logging"/>
+			<exclude module="jruby"/>
+			<exclude module="spring-instrument"/>
+		</dependency>
+		
+		<!--logging-->
+		<!--SLF4J bound to logback-classic with redirection of jcl, log4j and jul to SLF4J-->
+		<dependency org="ch.qos.logback" name="logback-classic" rev="1.1.3">
+    		<artifact name="logback-classic" ext="jar"/>
+		</dependency>
+		<dependency org="org.slf4j" name="log4j-over-slf4j" rev="1.7.12"/>
+    	<dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.7.12"> 
+		    <artifact name="jcl-over-slf4j" ext="jar"/> 
+		</dependency>
+		<dependency org="org.slf4j" name="jul-to-slf4j" rev="1.7.12"> 
+    		<artifact name="jul-to-slf4j" ext="jar"/> 
+		</dependency>
+    </dependencies>
+</ivy-module>
+    
