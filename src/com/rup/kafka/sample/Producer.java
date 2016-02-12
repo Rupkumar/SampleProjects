@@ -50,14 +50,12 @@ public class Producer extends Thread
       String messageStr = "Message_" + messageNo;
       long startTime = System.currentTimeMillis();
       if (isAsync) { // Send asynchronously
-        producer.send(new ProducerRecord<Integer, String>(topic,
-            messageNo,
-            messageStr), new DemoCallBack(startTime, messageNo, messageStr));
+        producer.send(new ProducerRecord<Integer, String>(topic,messageNo,messageStr), 
+        		new DemoCallBack(startTime, messageNo, messageStr)
+        );
       } else { // Send synchronously
         try {
-          producer.send(new ProducerRecord<Integer, String>(topic,
-              messageNo,
-              messageStr)).get();
+          producer.send(new ProducerRecord<Integer, String>(topic,messageNo,messageStr)).get();
           System.out.println("Sent message: (" + messageNo + ", " + messageStr + ")");
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -94,9 +92,7 @@ class DemoCallBack implements Callback {
   public void onCompletion(RecordMetadata metadata, Exception exception) {
     long elapsedTime = System.currentTimeMillis() - startTime;
     if (metadata != null) {
-      System.out.println(
-          "message(" + key + ", " + message + ") sent to partition(" + metadata.partition() +
-              "), " +
+      System.out.println("message(" + key + ", " + message + ") sent to partition(" + metadata.partition() +"), " +
               "offset(" + metadata.offset() + ") in " + elapsedTime + " ms");
     } else {
       exception.printStackTrace();

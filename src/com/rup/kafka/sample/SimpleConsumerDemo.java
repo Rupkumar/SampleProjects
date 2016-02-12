@@ -54,7 +54,7 @@ public class SimpleConsumerDemo {
   }
   
   public static void main(String[] args) throws Exception {
-    generateData();
+    //generateData();
       
     SimpleConsumer simpleConsumer = new SimpleConsumer(KafkaProperties.kafkaServerURL,
                                                        KafkaProperties.kafkaServerPort,
