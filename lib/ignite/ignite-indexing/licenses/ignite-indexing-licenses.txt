@@ -1,0 +1,13 @@
+// ------------------------------------------------------------------
+// List of ignite-indexing module's dependencies provided as a part of this distribution
+// which licenses differ from Apache Software License.
+// ------------------------------------------------------------------
+
+==============================================================================
+For H2 Database Engine (http://www.h2database.com) com.h2database:h2:jar:1.3.175
+==============================================================================
+This product bundles H2 Database Engine which is available under a:
+The H2 License, Version 1.0. For details, see http://h2database.com/html/license.html.
+
+
+

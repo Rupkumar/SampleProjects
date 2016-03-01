@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Barclays (BARCLAY'S GLOBAL INVESTORS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="schema-mapping">
+		<xs:annotation>
+			<xs:documentation>Config for maping cache objects.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="sybase">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="databases">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="database" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="tables">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="table" minOccurs="0" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:choice>
+																			<xs:element name="excluded-columns" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="column" type="column" maxOccurs="unbounded"/>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="affinity-key" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="column" type="column" maxOccurs="unbounded"/>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:choice>
+																		<xs:attribute name="name" type="xs:string" use="required"/>
+																		<xs:attribute name="pk-index-name" type="xs:string" use="optional"/>
+																		<xs:attribute name="class-name" type="xs:string" use="optional"/>
+																		<xs:attribute name="cache-mode" use="optional" default="REPLICATED">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:token">
+																					<xs:enumeration value="PARTITIONED"/>
+																					<xs:enumeration value="REPLICATED"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																		<xs:attribute name="write-synch-mode" use="optional" default="FULL_ASYNC">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:token">
+																					<xs:enumeration value="FULL_SYNC"/>
+																					<xs:enumeration value="PRIMARY_SYNC"/>
+																					<xs:enumeration value="FULL_ASYNC"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																		<xs:attribute name="rebal-mode" use="optional" default="ASYNC">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:token">
+																					<xs:enumeration value="SYNC"/>
+																					<xs:enumeration value="ASYNC"/>
+																					<xs:enumeration value="NONE"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																		<xs:attribute name="backups" type="xs:int" use="optional" default="0"/>
+																		<xs:attribute name="cache-atomicity-mode" use="optional" default="TRANSACTIONAL">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:token">
+																					<xs:enumeration value="ATOMIC"/>
+																					<xs:enumeration value="TRANSACTIONAL"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="map-all" type="xs:boolean" use="optional" default="false"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:choice>
+												<xs:attribute name="name" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="column">
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+</xs:schema>

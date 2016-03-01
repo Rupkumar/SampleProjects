@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Barclays (BARCLAY'S GLOBAL INVESTORS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="coldboot-policy">
+		<xs:annotation>
+			<xs:documentation>Policy to load sybase database tables and data on load.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="caches">
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="cache" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="class" type="xs:string" use="optional"/>
+									<xs:attribute name="package" type="xs:string" use="optional"/>
+									<xs:attribute name="name" type="xs:string" use="optional"/>
+									<xs:attribute name="coldboot-query" type="xs:string" use="optional"/>
+									<xs:attribute name="gpx" type="xs:boolean" use="optional" default="false"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

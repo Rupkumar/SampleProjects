@@ -25,13 +25,25 @@
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.1.3">
     		<artifact name="logback-classic" ext="jar"/>
 		</dependency>
-		<dependency org="org.slf4j" name="log4j-over-slf4j" rev="1.7.12"/>
+		<!--<dependency org="org.slf4j" name="log4j-over-slf4j" rev="1.7.12"/> -->
     	<dependency org="org.slf4j" name="jcl-over-slf4j" rev="1.7.12"> 
 		    <artifact name="jcl-over-slf4j" ext="jar"/> 
 		</dependency>
 		<dependency org="org.slf4j" name="jul-to-slf4j" rev="1.7.12"> 
     		<artifact name="jul-to-slf4j" ext="jar"/> 
 		</dependency>
+		<dependency org="apache" name="commons-codec" rev="1.3" conf="default"/>
+		    <dependency org="brs" name="libutil" rev="${brs.javalib.version}" conf="default,sources" changing="true">
+    	</dependency>
+    	<dependency org="brs" name="libdbconnect" rev="${brs.javalib.version}" conf="default,sources" changing="true">
+    	</dependency>
+		
+		<dependency org="brs" name="libpersistence" rev="${brs.javalib.version}" conf="*->@" changing="true">
+        	<exclude name="easymock" />
+        	<exclude name="easymockclassextension" />
+        	<exclude name="hsqldb" />
+    	</dependency>
+		
     </dependencies>
 </ivy-module>
     

@@ -18,18 +18,20 @@ public class TargetDataCache {
 		
 		try (Ignite ignite = Ignition.start("config/example-ignite.xml")) {
 			
-			IgniteCache<Long, AllocTargetMaster> targetMasterCache = ignite.getOrCreateCache(TargetCacheConfig.targetMasterCache());
+			IgniteCache<Integer, AllocTargetMaster> targetMasterCache = ignite.getOrCreateCache(TargetCacheConfig.targetMasterCache());
 			
 			AllocTargetMaster t1 = new AllocTargetMaster();
-			t1.setId(2);
+			t1.setAllocTargetMasterId(2);
 			t1.setAllocTargetName("Test2");
-			targetMasterCache.put(t1.getId(), t1);
+			targetMasterCache.put(t1.getAllocTargetMasterId(), t1);
 			
 			
 			String sql1 = "select * from AllocTargetMaster as m";
 			
 			QueryCursor<List<?>> cursor1 = targetMasterCache.query(new SqlFieldsQuery(sql1));
-			System.out.println(cursor1.getAll());
+			for (List<?> data :cursor1.getAll()) {
+			    System.out.println(data);
+			}
 		}
 
 	}

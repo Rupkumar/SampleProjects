@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema-mapper.xsd">
+  <sybase>
+    <databases>
+      <database name="targetdb">
+      	<tables>
+      		<table name="alloc_target_master" />
+      	</tables>
+      </database>
+    </databases>
+  </sybase>
+</schema-mapping>

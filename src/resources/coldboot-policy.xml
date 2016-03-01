@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coldboot-policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="coldboot-policy.xsd">
+  <caches>
+
+    <cache class="com.rup.ignite.sample.target.model.AllocTargetMaster" coldboot-query="
+SELECT alloc_target_master_id, run_order, start_date, end_date, final_signoff_by, final_signoff_time, at_port_code, modified_by, modified_time, status, alloc_target_name, alloc_target_strategy_id, super_id 
+	FROM targetdb.dbo.alloc_target_master" gpx="false" />
+
+<cache class="com.rup.ignite.sample.target.model.AllocTargetStrategy" coldboot-query="
+SELECT * FROM targetdb.dbo.alloc_target_strategy" gpx="false" />
+
+  </caches>
+</coldboot-policy>

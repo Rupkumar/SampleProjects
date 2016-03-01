@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<!--
+		the sybase driver and jtds driver implements the setAutoCommit()
+		differently. the sybase driver issue a "begin tran" sql to switch to a
+		non-autocommit mode, then on commit(), or rollback(), it issues the
+		"begin tran" to start another non-autocommit mode. it tries to run
+		under non-chained mode the jtds driver implements the setAutoCommit()
+		by switching the chained mode and non-chained mode with "set chained
+		off" for auto commit mode and "set chained on" to non-auto commit
+		mode. usually these two works fine. the only side effect by switching
+		the chained mode is that if a preparedstatement is created under a
+		non-chained mode, it cannot be called under chained-mode.
+	-->
+	<!--
+		to run this program, create the sec_master on tempdb first select *
+		into tempdb..sec_master from secdb..sec_master where cusip =
+		'91XXXXXXX' go create unique index idx_unique_cusip on
+		tempdb..sec_master (cusip) go
+	-->
+
+	<!--
+		next step is to figure out how could we pass the url information,
+		username/password information to the application rather than hard
+		coded in the configuration file
+	-->
+<!DOCTYPE beans PUBLIC  "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="dbPassword" class="com.bfm.util.spring.DatabasePassword">
+		<constructor-arg><value>${brs.env.syb_bin}/get_syb_passwd</value></constructor-arg>
+	</bean>
+
+	<bean id="writeDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="properties">
+			<props>
+				<prop key="APPLICATIONNAME">AladdinLiveServer</prop>
+                <prop key="DYNAMIC_PREPARE">true</prop>
+			</props>
+		</property>
+		<property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+  		<property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dswrite}" />
+		<property name="user" value="${brs.database.user}" />
+		<property name="password" ref="dbPassword" />
+		<property name="maxPoolSize" value="25" />
+		<property name="minPoolSize" value="3" />
+		<property name="initialPoolSize" value="3" />
+		<property name="acquireIncrement" value="1" />
+        <property name="maxIdleTime" value="0" />
+        <property name="maxIdleTimeExcessConnections" value="600" />
+        <property name="checkoutTimeout" value="300000" />  <!-- 5 mins timeout -->
+        <property name="connectionCustomizerClassName" value="com.aladdin.database.AppContextConnectionCustomiser"/>
+ 	</bean>
+ 	
+	<bean id="hibReadDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="properties">
+			<props>
+				<prop key="APPLICATIONNAME">AladdinLiveServer</prop>
+                <prop key="DYNAMIC_PREPARE">true</prop>
+			</props>
+		</property>
+		<property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+  		<property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dsread}" />
+		<property name="user" value="${brs.database.user}" />
+		<property name="password" ref="dbPassword" />
+		<property name="maxPoolSize" value="25" />
+		<property name="minPoolSize" value="3" />
+		<property name="initialPoolSize" value="3" />
+		<property name="acquireIncrement" value="1" />
+        <property name="maxIdleTime" value="0" />
+        <property name="maxIdleTimeExcessConnections" value="600" />
+        <property name="checkoutTimeout" value="300000" />  <!-- 5 mins timeout -->
+        <property name="connectionCustomizerClassName" value="com.aladdin.database.AppContextConnectionCustomiser"/>
+ 	</bean>
+ 	
+
+    <bean id="jdbcWriteDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+        lazy-init="default" autowire="default" dependency-check="default">
+        <property name="properties">
+            <props>
+                <prop key="APPLICATIONNAME">AladdinLiveServer</prop>
+                <prop key="DYNAMIC_PREPARE">true</prop>
+            </props>
+        </property>
+        <property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+        <property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dswrite}" />
+        <property name="user" value="${brs.database.user}" />
+        <property name="password" ref="dbPassword" />
+        <property name="maxPoolSize" value="25" />
+        <property name="minPoolSize" value="3" />
+        <property name="initialPoolSize" value="3" />
+        <property name="acquireIncrement" value="1" />  
+        <property name="maxIdleTime" value="0" />
+        <property name="maxIdleTimeExcessConnections" value="600" />
+        <property name="maxStatements" value="200" /> 
+        <property name="checkoutTimeout" value="300000" />  <!-- 5 mins timeout -->
+        <property name="connectionCustomizerClassName" value="com.aladdin.database.SybaseConnectionCustomiser"/>
+    </bean>
+
+	<bean id="readDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="properties">
+			<props>
+				<prop key="APPLICATIONNAME">AladdinLiveServer</prop>
+                <prop key="DYNAMIC_PREPARE">true</prop>
+			</props>
+		</property>
+		<property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+  		<property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dsread}" />
+		<property name="user" value="${brs.database.user}" />
+		<property name="password" ref="dbPassword" />
+        <property name="maxPoolSize" value="25" />
+        <property name="minPoolSize" value="3" />
+        <property name="initialPoolSize" value="3" />
+        <property name="acquireIncrement" value="1" />
+        <property name="maxIdleTime" value="0" />
+        <property name="maxIdleTimeExcessConnections" value="600" />       
+        <property name="maxStatements" value="20" />
+        <property name="checkoutTimeout" value="300000" />
+        <property name="connectionCustomizerClassName" value="com.aladdin.database.SybaseConnectionCustomiser"/>
+	</bean>
+	
+	<bean id="readGpxDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="properties">
+			<props>
+				<prop key="APPLICATIONNAME">AladdinLiveServer</prop>
+                <prop key="DYNAMIC_PREPARE">true</prop>
+			</props>
+		</property>
+		<property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+  		<property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dshist}" />
+		<property name="user" value="${brs.database.user}" />
+		<property name="password" ref="dbPassword" />
+        <property name="maxPoolSize" value="25" />
+        <property name="minPoolSize" value="1" />
+        <property name="initialPoolSize" value="1" />
+        <property name="acquireIncrement" value="1" />
+        <property name="maxIdleTime" value="0" />
+        <property name="maxIdleTimeExcessConnections" value="600" />
+        <property name="checkoutTimeout" value="300000" />  <!-- 5 mins timeout -->
+        <property name="connectionCustomizerClassName" value="com.aladdin.database.SybaseConnectionCustomiser"/>
+	</bean>
+
+    <bean id="decodesDataSource" class="com.mchange.v2.c3p0.DriverManagerDataSource">
+		<property name="properties">
+			<props>
+				<prop key="APPLICATIONNAME">Art</prop>
+			</props>			
+		</property>
+		<property name="driverClass" value="com.sybase.jdbc4.jdbc.SybDriver" />
+		<property name="jdbcUrl" value="jdbc:sybase:Tds:${brs.dsread}" />
+		<property name="user" value="${brs.database.user}"/>
+		<property name="password" ref="dbPassword"/>
+    </bean>	
+    
+	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    	<constructor-arg><ref bean="jdbcWriteDataSource" /></constructor-arg>
+    </bean>
+    
+    <bean id="jdbcTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="jdbcWriteDataSource"/>
+    </bean>
+    
+    <bean id="createDatabaseHelper" class="com.aladdin.database.DatabaseHelper" factory-method="setup">
+    	<constructor-arg index="0" ref="writeDataSource" />
+    	<constructor-arg index="1" ref="readDataSource" />
+    	<constructor-arg index="2" ref="readGpxDataSource" />
+    </bean>
+    <bean id="aladdinMessageSource" class="com.bfm.util.PropertyAladdinMessageSource">
+      <constructor-arg><value>config/ErrorMessages</value></constructor-arg>
+    </bean>
+</beans>
