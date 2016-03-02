@@ -34,11 +34,11 @@ public final class AllocTargetMaster extends AbstractAladdinEntity<Integer> impl
 	private Integer runOrder;
 	
     @AladdinColumn(columnName="start_date", columnType=ColumnType.DATE)
-	@QuerySqlField(name="start_date")
+	@QuerySqlField(name="start_date", orderedGroups={@QuerySqlField.Group(name="idx_alloc_target_master", order=0, descending = true)})
 	private Date startDate;
 
     @AladdinColumn(columnName="end_date", columnType=ColumnType.DATE)
-	@QuerySqlField(name="end_date")
+	@QuerySqlField(name="end_date", orderedGroups={@QuerySqlField.Group(name="idx_alloc_target_master", order=1, descending = true)})
 	private Date endDate;
 
     @AladdinColumn(columnName="final_signoff_by", columnType=ColumnType.STRING, length=8)
@@ -70,7 +70,7 @@ public final class AllocTargetMaster extends AbstractAladdinEntity<Integer> impl
 	private String allocTargetName;
 
     @AladdinColumn(columnName="alloc_target_strategy_id", columnType=ColumnType.INT)
-	@QuerySqlField(name="alloc_target_strategy_id")
+	@QuerySqlField(name="alloc_target_strategy_id", index = true, orderedGroups={@QuerySqlField.Group(name="idx_alloc_target_master", order=2)})
 	private Integer allocTargetStrategyId;
 
     @AladdinColumn(columnName="super_id", columnType=ColumnType.INT)
@@ -79,7 +79,7 @@ public final class AllocTargetMaster extends AbstractAladdinEntity<Integer> impl
     
     public static AladdinSybaseCache<Integer, AllocTargetMaster> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
     {
-        return acm.createSybaseCache(name, Integer.class, AllocTargetMaster.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.REPLICATED, CacheAtomicityMode.TRANSACTIONAL);
+        return acm.createSybaseCache(name, Integer.class, AllocTargetMaster.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
     }
     
     public AllocTargetMaster() {
