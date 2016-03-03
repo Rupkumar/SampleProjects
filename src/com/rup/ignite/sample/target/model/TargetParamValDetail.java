@@ -10,7 +10,6 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
-import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -83,6 +82,7 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     public TargetParamValDetail (Integer allocTargetMasterId, Integer targetParamValDetailId, Integer targetParamDefId, Integer allocTargetDetailId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
         super(new TargetParamValDetailKey(targetParamValDetailId, allocTargetMasterId));
         this.targetParamValDetailId = targetParamValDetailId;
+        this.allocTargetMasterId = allocTargetMasterId;
         this.targetParamDefId = targetParamDefId;
         this.allocTargetDetailId = allocTargetDetailId;
         this.valueVarchar = valueVarchar;
@@ -174,14 +174,21 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     public void setSeqNum(Integer seqNum) {
         this.seqNum = seqNum;
     }
-    
-    
+
+    public Integer getAllocTargetMasterId() {
+        return allocTargetMasterId;
+    }
+
+    public void setAllocTargetMasterId(Integer allocTargetMasterId) {
+        this.allocTargetMasterId = allocTargetMasterId;
+    }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
+        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((createdBy == null) ? 0 : createdBy.hashCode());
         result = prime * result + ((createdTime == null) ? 0 : createdTime.hashCode());
         result = prime * result + ((seqNum == null) ? 0 : seqNum.hashCode());
@@ -207,6 +214,11 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
             if (other.allocTargetDetailId != null)
                 return false;
         } else if (!allocTargetDetailId.equals(other.allocTargetDetailId))
+            return false;
+        if (allocTargetMasterId == null) {
+            if (other.allocTargetMasterId != null)
+                return false;
+        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
             return false;
         if (createdBy == null) {
             if (other.createdBy != null)
@@ -259,9 +271,10 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     
     @Override
     public String toString() {
-        return "TargetParamValDetail [targetParamValDetailId=" + targetParamValDetailId + ", targetParamDefId=" + targetParamDefId + ", allocTargetDetailId="
-                + allocTargetDetailId + ", valueVarchar=" + valueVarchar + ", valueNumeric=" + valueNumeric + ", valueFloat=" + valueFloat + ", valueInt="
-                + valueInt + ", createdBy=" + createdBy + ", createdTime=" + createdTime + ", seqNum=" + seqNum + "]";
+        return "TargetParamValDetail [allocTargetMasterId=" + allocTargetMasterId + ", targetParamValDetailId=" + targetParamValDetailId
+                + ", targetParamDefId=" + targetParamDefId + ", allocTargetDetailId=" + allocTargetDetailId + ", valueVarchar=" + valueVarchar
+                + ", valueNumeric=" + valueNumeric + ", valueFloat=" + valueFloat + ", valueInt=" + valueInt + ", createdBy=" + createdBy + ", createdTime="
+                + createdTime + ", seqNum=" + seqNum + "]";
     }
 
     @Override
@@ -269,6 +282,7 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     {
         super.writeExternal(out);
         out.writeInt(this.targetParamValDetailId);
+        out.writeInt(this.allocTargetMasterId);
         out.writeObject(this.targetParamDefId);
         out.writeObject(this.allocTargetDetailId);
         out.writeObject(this.valueVarchar);
@@ -285,6 +299,7 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     {
         super.readExternal(in);
         this.targetParamValDetailId = in.readInt();
+        this.allocTargetMasterId = in.readInt();
         this.targetParamDefId = (Integer)in.readObject();
         this.allocTargetDetailId = (Integer)in.readObject();
         this.valueVarchar = (String)in.readObject();

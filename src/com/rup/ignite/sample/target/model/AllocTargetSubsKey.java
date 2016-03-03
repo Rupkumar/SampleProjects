@@ -45,7 +45,7 @@ public final class AllocTargetSubsKey implements Externalizable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
+        //result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((allocTargetSubsId == null) ? 0 : allocTargetSubsId.hashCode());
         return result;
     }
@@ -59,11 +59,11 @@ public final class AllocTargetSubsKey implements Externalizable {
         if (getClass() != obj.getClass())
             return false;
         AllocTargetSubsKey other = (AllocTargetSubsKey) obj;
-        if (allocTargetMasterId == null) {
-            if (other.allocTargetMasterId != null)
-                return false;
-        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
-            return false;
+//        if (allocTargetMasterId == null) {
+//            if (other.allocTargetMasterId != null)
+//                return false;
+//        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
+//            return false;
         if (allocTargetSubsId == null) {
             if (other.allocTargetSubsId != null)
                 return false;

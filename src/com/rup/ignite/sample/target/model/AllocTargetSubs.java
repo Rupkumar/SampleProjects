@@ -10,7 +10,6 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
-import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -21,8 +20,8 @@ import com.aladdin.entities.annotations.AladdinDatabaseObject;
 import com.aladdin.ignite.AladdinCacheManager;
 import com.aladdin.ignite.AladdinSybaseCache;
 
-@AladdinDatabaseObject(getTbl="alloc_target_subs", keyClass=AffinityKey.class)
-public final class AllocTargetSubs extends AbstractAladdinEntity<AffinityKey> implements Externalizable {
+@AladdinDatabaseObject(getTbl="alloc_target_subs", keyClass=AllocTargetSubsKey.class)
+public final class AllocTargetSubs extends AbstractAladdinEntity<AllocTargetSubsKey> implements Externalizable {
 
     private static final long serialVersionUID = 1L;
     
@@ -79,9 +78,9 @@ public final class AllocTargetSubs extends AbstractAladdinEntity<AffinityKey> im
 	private Date modifiedTime;
 	
     
-    public static AladdinSybaseCache<AffinityKey, AllocTargetSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
+    public static AladdinSybaseCache<AllocTargetSubsKey, AllocTargetSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
     {
-        return acm.createSybaseCache(name, AffinityKey.class, AllocTargetSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
+        return acm.createSybaseCache(name, AllocTargetSubsKey.class, AllocTargetSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
     }
     
     public AllocTargetSubs() {
@@ -89,7 +88,7 @@ public final class AllocTargetSubs extends AbstractAladdinEntity<AffinityKey> im
     }
    
     public AllocTargetSubs (Integer allocTargetSubsId, Integer portfolioCode, Integer allocTargetMasterId, Date startDate, Date endDate, Integer runOrder, String createdBy, Date createdTime, String status, String finalSignoffBy, Date finalSignoffTime, String modifiedBy, Date modifiedTime) {
-        super(new AffinityKey<>(allocTargetSubsId, allocTargetMasterId));
+        super(new AllocTargetSubsKey(allocTargetSubsId, allocTargetMasterId));
 
         this.allocTargetSubsId = allocTargetSubsId;
         this.portfolioCode = portfolioCode;

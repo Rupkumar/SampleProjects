@@ -44,7 +44,7 @@ public final class TargetParamValMasterKey implements Externalizable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
+        //result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((targetParamValMasterId == null) ? 0 : targetParamValMasterId.hashCode());
         return result;
     }
@@ -58,11 +58,11 @@ public final class TargetParamValMasterKey implements Externalizable {
         if (getClass() != obj.getClass())
             return false;
         TargetParamValMasterKey other = (TargetParamValMasterKey) obj;
-        if (allocTargetMasterId == null) {
-            if (other.allocTargetMasterId != null)
-                return false;
-        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
-            return false;
+//        if (allocTargetMasterId == null) {
+//            if (other.allocTargetMasterId != null)
+//                return false;
+//        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
+//            return false;
         if (targetParamValMasterId == null) {
             if (other.targetParamValMasterId != null)
                 return false;

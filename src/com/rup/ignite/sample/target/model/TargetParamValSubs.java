@@ -10,7 +10,6 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
-import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -21,10 +20,14 @@ import com.aladdin.entities.annotations.AladdinDatabaseObject;
 import com.aladdin.ignite.AladdinCacheManager;
 import com.aladdin.ignite.AladdinSybaseCache;
 
-@AladdinDatabaseObject(getTbl="target_param_val_subs", keyClass=AffinityKey.class)
-public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey> implements Externalizable {
+@AladdinDatabaseObject(getTbl="target_param_val_subs", keyClass=TargetParamValSubsKey.class)
+public final class TargetParamValSubs extends AbstractAladdinEntity<TargetParamValSubsKey> implements Externalizable {
 
     private static final long serialVersionUID = 1L;
+    
+    @AladdinColumn(columnName="alloc_target_master_id", columnType=ColumnType.INT)
+    @QuerySqlField(name="alloc_target_master_id", index=true)
+    private Integer allocTargetMasterId;
     
     @AladdinColumn(columnName="target_param_val_subs_id", columnType=ColumnType.INT, primaryKey=true)
 	@QuerySqlField(name="target_param_val_subs_id",index = true)
@@ -67,17 +70,18 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     private Integer seqNum;
 
     
-    public static AladdinSybaseCache<AffinityKey, TargetParamValSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
+    public static AladdinSybaseCache<TargetParamValSubsKey, TargetParamValSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
     {
-        return acm.createSybaseCache(name, AffinityKey.class, TargetParamValSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
+        return acm.createSybaseCache(name, TargetParamValSubsKey.class, TargetParamValSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
     }
     
     public TargetParamValSubs() {
         super(null);
     }
    
-    public TargetParamValSubs (Integer targetParamValSubsId, Integer targetParamDefId, Integer allocTargetSubsId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
-        super(new AffinityKey<>(targetParamDefId, allocTargetSubsId));
+    public TargetParamValSubs (Integer allocTargetMasterId, Integer targetParamValSubsId, Integer targetParamDefId, Integer allocTargetSubsId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
+        super(new TargetParamValSubsKey(targetParamDefId, allocTargetMasterId));
+        this.allocTargetMasterId = allocTargetMasterId;
         this.targetParamValSubsId = targetParamValSubsId;
         this.targetParamDefId = targetParamDefId;
         this.allocTargetSubsId = allocTargetSubsId;
@@ -91,6 +95,14 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     }
 
     
+    public Integer getAllocTargetMasterId() {
+        return allocTargetMasterId;
+    }
+
+    public void setAllocTargetMasterId(Integer allocTargetMasterId) {
+        this.allocTargetMasterId = allocTargetMasterId;
+    }
+
     public Integer getTargetParamValSubsId() {
         return targetParamValSubsId;
     }
@@ -177,6 +189,7 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((allocTargetSubsId == null) ? 0 : allocTargetSubsId.hashCode());
         result = prime * result + ((createdBy == null) ? 0 : createdBy.hashCode());
         result = prime * result + ((createdTime == null) ? 0 : createdTime.hashCode());
@@ -199,6 +212,11 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
         if (getClass() != obj.getClass())
             return false;
         TargetParamValSubs other = (TargetParamValSubs) obj;
+        if (allocTargetMasterId == null) {
+            if (other.allocTargetMasterId != null)
+                return false;
+        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
+            return false;
         if (allocTargetSubsId == null) {
             if (other.allocTargetSubsId != null)
                 return false;
@@ -255,9 +273,10 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     
     @Override
     public String toString() {
-        return "TargetParamValSubs [targetParamValSubsId=" + targetParamValSubsId + ", targetParamDefId=" + targetParamDefId + ", allocTargetSubsId="
-                + allocTargetSubsId + ", valueVarchar=" + valueVarchar + ", valueNumeric=" + valueNumeric + ", valueFloat=" + valueFloat + ", valueInt="
-                + valueInt + ", createdBy=" + createdBy + ", createdTime=" + createdTime + ", seqNum=" + seqNum + "]";
+        return "TargetParamValSubs [allocTargetMasterId=" + allocTargetMasterId + ", targetParamValSubsId=" + targetParamValSubsId + ", targetParamDefId="
+                + targetParamDefId + ", allocTargetSubsId=" + allocTargetSubsId + ", valueVarchar=" + valueVarchar + ", valueNumeric=" + valueNumeric
+                + ", valueFloat=" + valueFloat + ", valueInt=" + valueInt + ", createdBy=" + createdBy + ", createdTime=" + createdTime + ", seqNum=" + seqNum
+                + "]";
     }
 
     @Override
@@ -265,6 +284,7 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     {
         super.writeExternal(out);
         out.writeInt(this.targetParamValSubsId);
+        out.writeInt(this.allocTargetMasterId);
         out.writeObject(this.targetParamDefId);
         out.writeObject(this.allocTargetSubsId);
         out.writeObject(this.valueVarchar);
@@ -281,6 +301,7 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey>
     {
         super.readExternal(in);
         this.targetParamValSubsId = in.readInt();
+        this.allocTargetMasterId = in.readInt();
         this.targetParamDefId = (Integer)in.readObject();
         this.allocTargetSubsId = (Integer)in.readObject();
         this.valueVarchar = (String)in.readObject();

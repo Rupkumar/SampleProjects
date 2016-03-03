@@ -10,7 +10,6 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
-import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -189,7 +188,13 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
         this.mappingDescription = mappingDescription;
     }
     
-    
+    public Integer getAllocTargetMasterId() {
+        return allocTargetMasterId;
+    }
+
+    public void setAllocTargetMasterId(Integer allocTargetMasterId) {
+        this.allocTargetMasterId = allocTargetMasterId;
+    }
 
     @Override
     public int hashCode() {
@@ -197,6 +202,7 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
         int result = 1;
         result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
         result = prime * result + ((allocTargetMappingId == null) ? 0 : allocTargetMappingId.hashCode());
+        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((buySell == null) ? 0 : buySell.hashCode());
         result = prime * result + ((inOut == null) ? 0 : inOut.hashCode());
         result = prime * result + ((mappingDescription == null) ? 0 : mappingDescription.hashCode());
@@ -227,6 +233,11 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
             if (other.allocTargetMappingId != null)
                 return false;
         } else if (!allocTargetMappingId.equals(other.allocTargetMappingId))
+            return false;
+        if (allocTargetMasterId == null) {
+            if (other.allocTargetMasterId != null)
+                return false;
+        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
             return false;
         if (buySell == null) {
             if (other.buySell != null)
@@ -278,9 +289,10 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
 
     @Override
     public String toString() {
-        return "AllocTargetMapping [allocTargetMappingId=" + allocTargetMappingId + ", allocTargetDetailId=" + allocTargetDetailId + ", inOut=" + inOut
-                + ", mappingType=" + mappingType + ", mappingId=" + mappingId + ", buySell=" + buySell + ", priority=" + priority + ", modifiedBy="
-                + modifiedBy + ", modifiedTime=" + modifiedTime + ", mappingSubType=" + mappingSubType + ", mappingDescription=" + mappingDescription + "]";
+        return "AllocTargetMapping [allocTargetMasterId=" + allocTargetMasterId + ", allocTargetMappingId=" + allocTargetMappingId + ", allocTargetDetailId="
+                + allocTargetDetailId + ", inOut=" + inOut + ", mappingType=" + mappingType + ", mappingId=" + mappingId + ", buySell=" + buySell
+                + ", priority=" + priority + ", modifiedBy=" + modifiedBy + ", modifiedTime=" + modifiedTime + ", mappingSubType=" + mappingSubType
+                + ", mappingDescription=" + mappingDescription + "]";
     }
 
     @Override
@@ -288,6 +300,7 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
     {
         super.writeExternal(out);
         out.writeInt( this.allocTargetMappingId);
+        out.writeInt(this.allocTargetMasterId);
         out.writeInt(this.allocTargetDetailId);
         out.writeObject(this.inOut);
         out.writeObject(this.mappingType);
@@ -305,6 +318,7 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
     {
         super.readExternal(in);
         this.allocTargetMappingId = in.readInt();
+        this.allocTargetMasterId = in.readInt();
         this.allocTargetDetailId = in.readInt();
         this.inOut = (String)in.readObject();
         this.mappingType = (String)in.readObject();
