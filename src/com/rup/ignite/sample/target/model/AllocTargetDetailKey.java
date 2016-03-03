@@ -53,7 +53,7 @@ public final class AllocTargetDetailKey implements Externalizable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
-        result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
+        //result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         return result;
     }
 
@@ -71,11 +71,11 @@ public final class AllocTargetDetailKey implements Externalizable {
                 return false;
         } else if (!allocTargetDetailId.equals(other.allocTargetDetailId))
             return false;
-        if (allocTargetMasterId == null) {
-            if (other.allocTargetMasterId != null)
-                return false;
-        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
-            return false;
+//        if (allocTargetMasterId == null) {
+//            if (other.allocTargetMasterId != null)
+//                return false;
+//        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
+//            return false;
         return true;
     }
 

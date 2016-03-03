@@ -10,6 +10,7 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
+import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -25,6 +26,10 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
 
     private static final long serialVersionUID = 1L;
     
+    @AladdinColumn(columnName="alloc_target_master_id", columnType=ColumnType.INT)
+    @QuerySqlField(name="alloc_target_master_id", index=true)
+    private Integer allocTargetMasterId;
+    
     @AladdinColumn(columnName="target_param_val_detail_id", columnType=ColumnType.INT, primaryKey=true)
 	@QuerySqlField(name="target_param_val_detail_id",index = true)
 	private Integer targetParamValDetailId;
@@ -33,10 +38,10 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
     @QuerySqlField(name="target_param_def_id", index=true)
 	private Integer targetParamDefId;
     
-    @AladdinColumn(columnName="alloc_target_detaild_id", columnType=ColumnType.INT)
-    @QuerySqlField(name="alloc_target_detaild_id", index=true)
+    @AladdinColumn(columnName="alloc_target_detail_id", columnType=ColumnType.INT)
+    @QuerySqlField(name="alloc_target_detail_id", index=true)
     private Integer allocTargetDetailId;
-
+    
     @AladdinColumn(columnName="value_varchar", columnType=ColumnType.STRING, length=255)
 	@QuerySqlField(name="value_varchar")
 	private String valueVarchar;
@@ -75,8 +80,8 @@ public final class TargetParamValDetail extends AbstractAladdinEntity<TargetPara
         super(null);
     }
    
-    public TargetParamValDetail (Integer targetParamValDetailId, Integer targetParamDefId, Integer allocTargetDetailId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
-        super(new TargetParamValDetailKey(targetParamDefId, allocTargetDetailId));
+    public TargetParamValDetail (Integer allocTargetMasterId, Integer targetParamValDetailId, Integer targetParamDefId, Integer allocTargetDetailId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
+        super(new TargetParamValDetailKey(targetParamValDetailId, allocTargetMasterId));
         this.targetParamValDetailId = targetParamValDetailId;
         this.targetParamDefId = targetParamDefId;
         this.allocTargetDetailId = allocTargetDetailId;

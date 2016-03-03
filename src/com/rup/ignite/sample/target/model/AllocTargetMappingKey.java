@@ -14,14 +14,14 @@ public final class AllocTargetMappingKey implements Externalizable {
 	private Integer allocTargetMappingId;
 
 	@AffinityKeyMapped
-	private Integer allocTargetDetailId;
+	private Integer allocTargetMasterId;
 	
     public AllocTargetMappingKey() {
     }
    
-    public AllocTargetMappingKey (Integer allocTargetMappingId, Integer allocTargetDetailId) {
+    public AllocTargetMappingKey (Integer allocTargetMappingId, Integer allocTargetMasterId) {
         this.allocTargetMappingId = allocTargetMappingId;
-        this.allocTargetDetailId = allocTargetDetailId;
+        this.allocTargetMasterId = allocTargetMasterId;
     }
 
     public Integer getAllocTargetMappingId() {
@@ -32,19 +32,19 @@ public final class AllocTargetMappingKey implements Externalizable {
         this.allocTargetMappingId = allocTargetMappingId;
     }
 
-    public Integer getAllocTargetDetailId() {
-        return allocTargetDetailId;
+    public Integer getAllocTargetMasterId() {
+        return allocTargetMasterId;
     }
 
-    public void setAllocTargetDetailId(Integer allocTargetDetailId) {
-        this.allocTargetDetailId = allocTargetDetailId;
+    public void setAllocTargetMasterId(Integer allocTargetMasterId) {
+        this.allocTargetMasterId = allocTargetMasterId;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
+        //result = prime * result + ((allocTargetMasterId == null) ? 0 : allocTargetMasterId.hashCode());
         result = prime * result + ((allocTargetMappingId == null) ? 0 : allocTargetMappingId.hashCode());
         return result;
     }
@@ -58,11 +58,11 @@ public final class AllocTargetMappingKey implements Externalizable {
         if (getClass() != obj.getClass())
             return false;
         AllocTargetMappingKey other = (AllocTargetMappingKey) obj;
-        if (allocTargetDetailId == null) {
-            if (other.allocTargetDetailId != null)
-                return false;
-        } else if (!allocTargetDetailId.equals(other.allocTargetDetailId))
-            return false;
+//        if (allocTargetMasterId == null) {
+//            if (other.allocTargetMasterId != null)
+//                return false;
+//        } else if (!allocTargetMasterId.equals(other.allocTargetMasterId))
+//            return false;
         if (allocTargetMappingId == null) {
             if (other.allocTargetMappingId != null)
                 return false;
@@ -73,21 +73,21 @@ public final class AllocTargetMappingKey implements Externalizable {
 
     @Override
     public String toString() {
-        return "AllocTargetMappingKey [allocTargetMappingId=" + allocTargetMappingId + ", allocTargetDetailId=" + allocTargetDetailId + "]";
+        return "AllocTargetMappingKey [allocTargetMappingId=" + allocTargetMappingId + ", allocTargetDetailId=" + allocTargetMasterId + "]";
     }
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException
     {
         out.writeInt( this.allocTargetMappingId);
-        out.writeInt(this.allocTargetDetailId);
+        out.writeInt(this.allocTargetMasterId);
     }
     
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
     {
         this.allocTargetMappingId = in.readInt();
-        this.allocTargetDetailId = in.readInt();
+        this.allocTargetMasterId = in.readInt();
     }
 	
 }

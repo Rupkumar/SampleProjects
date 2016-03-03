@@ -14,14 +14,14 @@ public final class TargetParamValDetailKey implements Externalizable {
 	private Integer targetParamValDetailId;
 	
 	@AffinityKeyMapped
-    private Integer allocTargetDetailId;
+    private Integer allocTargetMasterId;
 
     public TargetParamValDetailKey() {
     }
    
-    public TargetParamValDetailKey (Integer targetParamValDetailId, Integer allocTargetDetailId) {
+    public TargetParamValDetailKey (Integer targetParamValDetailId, Integer allocTargetMasterId) {
         this.targetParamValDetailId = targetParamValDetailId;
-        this.allocTargetDetailId = allocTargetDetailId;
+        this.allocTargetMasterId = allocTargetMasterId;
     }
 
     
@@ -33,21 +33,19 @@ public final class TargetParamValDetailKey implements Externalizable {
         this.targetParamValDetailId = targetParamValDetailId;
     }
 
-    public Integer getAllocTargetDetailId() {
-        return allocTargetDetailId;
+    public Integer getAllocTargetMasterId() {
+        return allocTargetMasterId;
     }
 
-    public void setAllocTargetDetailId(Integer allocTargetDetailId) {
-        this.allocTargetDetailId = allocTargetDetailId;
+    public void setAllocTargetMasterId(Integer allocTargetMasterId) {
+        this.allocTargetMasterId = allocTargetMasterId;
     }
-
-    
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
+       // result = prime * result + ((allocTargetDetailId == null) ? 0 : allocTargetDetailId.hashCode());
         result = prime * result + ((targetParamValDetailId == null) ? 0 : targetParamValDetailId.hashCode());
         return result;
     }
@@ -61,11 +59,11 @@ public final class TargetParamValDetailKey implements Externalizable {
         if (getClass() != obj.getClass())
             return false;
         TargetParamValDetailKey other = (TargetParamValDetailKey) obj;
-        if (allocTargetDetailId == null) {
-            if (other.allocTargetDetailId != null)
-                return false;
-        } else if (!allocTargetDetailId.equals(other.allocTargetDetailId))
-            return false;
+//        if (allocTargetDetailId == null) {
+//            if (other.allocTargetDetailId != null)
+//                return false;
+//        } else if (!allocTargetDetailId.equals(other.allocTargetDetailId))
+//            return false;
         if (targetParamValDetailId == null) {
             if (other.targetParamValDetailId != null)
                 return false;
@@ -77,21 +75,21 @@ public final class TargetParamValDetailKey implements Externalizable {
     
     @Override
     public String toString() {
-        return "TargetParamValDetailKey [targetParamValDetailId=" + targetParamValDetailId + ", allocTargetDetailId=" + allocTargetDetailId + "]";
+        return "TargetParamValDetailKey [targetParamValDetailId=" + targetParamValDetailId + ", allocTargetMasterId=" + allocTargetMasterId + "]";
     }
 
     @Override
     public void writeExternal(ObjectOutput out) throws IOException
     {
         out.writeInt(this.targetParamValDetailId);
-        out.writeObject(this.allocTargetDetailId);
+        out.writeInt(this.allocTargetMasterId);
     }
     
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
     {
         this.targetParamValDetailId = in.readInt();
-        this.allocTargetDetailId = (Integer)in.readObject();
+        this.allocTargetMasterId = in.readInt();
     }
 	
 }

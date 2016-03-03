@@ -10,6 +10,7 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
+import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -20,8 +21,8 @@ import com.aladdin.entities.annotations.AladdinDatabaseObject;
 import com.aladdin.ignite.AladdinCacheManager;
 import com.aladdin.ignite.AladdinSybaseCache;
 
-@AladdinDatabaseObject(getTbl="target_param_val_subs", keyClass=TargetParamValSubsKey.class)
-public final class TargetParamValSubs extends AbstractAladdinEntity<TargetParamValSubsKey> implements Externalizable {
+@AladdinDatabaseObject(getTbl="target_param_val_subs", keyClass=AffinityKey.class)
+public final class TargetParamValSubs extends AbstractAladdinEntity<AffinityKey> implements Externalizable {
 
     private static final long serialVersionUID = 1L;
     
@@ -66,9 +67,9 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<TargetParamV
     private Integer seqNum;
 
     
-    public static AladdinSybaseCache<TargetParamValSubsKey, TargetParamValSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
+    public static AladdinSybaseCache<AffinityKey, TargetParamValSubs> createCache(AladdinCacheManager acm, String name, Coldboot coldboot)
     {
-        return acm.createSybaseCache(name, TargetParamValSubsKey.class, TargetParamValSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
+        return acm.createSybaseCache(name, AffinityKey.class, TargetParamValSubs.class, coldboot, CacheWriteSynchronizationMode.FULL_ASYNC, CacheRebalanceMode.ASYNC, 0, CacheMode.PARTITIONED, CacheAtomicityMode.TRANSACTIONAL);
     }
     
     public TargetParamValSubs() {
@@ -76,7 +77,7 @@ public final class TargetParamValSubs extends AbstractAladdinEntity<TargetParamV
     }
    
     public TargetParamValSubs (Integer targetParamValSubsId, Integer targetParamDefId, Integer allocTargetSubsId, String valueVarchar, Double valueNumeric, Double valueFloat, Integer valueInt, String createdBy, Date createdTime, Integer seqNum) {
-        super(new TargetParamValSubsKey(targetParamDefId, allocTargetSubsId));
+        super(new AffinityKey<>(targetParamDefId, allocTargetSubsId));
         this.targetParamValSubsId = targetParamValSubsId;
         this.targetParamDefId = targetParamDefId;
         this.allocTargetSubsId = allocTargetSubsId;

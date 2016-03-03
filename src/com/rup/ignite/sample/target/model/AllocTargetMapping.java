@@ -10,6 +10,7 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CacheRebalanceMode;
 import org.apache.ignite.cache.CacheWriteSynchronizationMode;
+import org.apache.ignite.cache.affinity.AffinityKey;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import com.aladdin.cloud.Coldboot;
@@ -24,6 +25,10 @@ import com.aladdin.ignite.AladdinSybaseCache;
 public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetMappingKey> implements Externalizable {
 
     private static final long serialVersionUID = 1L;
+    
+    @AladdinColumn(columnName="alloc_target_master_id", columnType=ColumnType.INT)
+    @QuerySqlField(name="alloc_target_master_id",index = true)
+    private Integer allocTargetMasterId;
     
     @AladdinColumn(columnName="alloc_target_mapping_id", columnType=ColumnType.INT, primaryKey=true)
 	@QuerySqlField(name="alloc_target_mapping_id",index = true)
@@ -79,9 +84,10 @@ public final class AllocTargetMapping extends AbstractAladdinEntity<AllocTargetM
         super(null);
     }
    
-    public AllocTargetMapping (Integer allocTargetMappingId, Integer allocTargetDetailId, String inOut, String mappingType, String mappingId, String buySell, Integer priority, String modifiedBy, Date modifiedTime, String mappingSubType, String mappingDescription) {
-        super(new AllocTargetMappingKey(allocTargetMappingId, allocTargetDetailId));
+    public AllocTargetMapping (Integer allocTargetMasterId, Integer allocTargetMappingId, Integer allocTargetDetailId, String inOut, String mappingType, String mappingId, String buySell, Integer priority, String modifiedBy, Date modifiedTime, String mappingSubType, String mappingDescription) {
+        super(new AllocTargetMappingKey(allocTargetMappingId, allocTargetMasterId));
 
+        this.allocTargetMasterId = allocTargetMasterId;
         this.allocTargetMappingId = allocTargetMappingId;
         this.allocTargetDetailId = allocTargetDetailId;
         this.inOut = inOut;

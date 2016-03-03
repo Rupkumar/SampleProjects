@@ -2,12 +2,47 @@
 <coldboot-policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="coldboot-policy.xsd">
   <caches>
 
-    <cache class="com.rup.ignite.sample.target.model.AllocTargetMaster" coldboot-query="
-SELECT alloc_target_master_id, run_order, start_date, end_date, final_signoff_by, final_signoff_time, at_port_code, modified_by, modified_time, status, alloc_target_name, alloc_target_strategy_id, super_id 
-	FROM targetdb.dbo.alloc_target_master" gpx="false" />
+	<cache class="com.rup.ignite.sample.target.model.AllocTargetStrategy" coldboot-query="
+		SELECT * FROM targetdb.dbo.alloc_target_strategy" gpx="false" />
 
-<cache class="com.rup.ignite.sample.target.model.AllocTargetStrategy" coldboot-query="
-SELECT * FROM targetdb.dbo.alloc_target_strategy" gpx="false" />
+	<cache class="com.rup.ignite.sample.target.model.TargetParamDef" coldboot-query="
+		SELECT * FROM targetdb.dbo.target_param_def" gpx="false" />
+
+    <cache class="com.rup.ignite.sample.target.model.AllocTargetMaster" coldboot-query="
+		SELECT alloc_target_master_id, run_order, start_date, end_date, final_signoff_by, final_signoff_time, 
+		at_port_code, modified_by, modified_time, status, alloc_target_name, alloc_target_strategy_id, super_id 
+		FROM targetdb.dbo.alloc_target_master" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.AllocTargetDetail" coldboot-query="
+		SELECT d.alloc_target_detail_id, d.alloc_target_master_id, d.display_override_name, d.alloc_target_type, d.parent_id, 
+		d.ordering, d.modified_by, d.modified_time 
+		FROM targetdb.dbo.alloc_target_detail d, targetdb.dbo.alloc_target_master m 
+		WHERE m.alloc_target_master_id = d.alloc_target_master_id 
+		AND m.alloc_target_strategy_id in (1,4,6)" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.AllocTargetMapping" coldboot-query="
+		SELECT d.alloc_target_master_id, mp.alloc_target_mapping_id, mp.alloc_target_detail_id, mp.in_out, mp.mapping_type, 
+		mp.mapping_id, mp.buy_sell, mp.priority, mp.modified_by, mp.modified_time, mp.mapping_sub_type, mp.mapping_description  
+		from targetdb.dbo.alloc_target_mapping mp, targetdb.dbo.alloc_target_detail d, targetdb.dbo.alloc_target_master m  
+		where m.alloc_target_master_id = d.alloc_target_master_id and 
+		d.alloc_target_detail_id = mp.alloc_target_detail_id and 
+		m.alloc_target_strategy_id in (1,4,6)" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.TargetParamValMaster" coldboot-query="
+		SELECT * from targetdb.dbo.target_param_val_master" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.TargetParamValDetail" coldboot-query="
+		SELECT d.alloc_target_master_id, vd.* 
+		FROM targetdb.dbo.target_param_val_detail vd, targetdb.dbo.alloc_target_detail d, targetdb.dbo.alloc_target_master m  
+		WHERE m.alloc_target_master_id = d.alloc_target_master_id 
+		AND d.alloc_target_detail_id = vd.alloc_target_detail_id 
+		AND m.alloc_target_strategy_id in (1,4,6)" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.AllocTargetSubs" coldboot-query="
+		SELECT * from targetdb.dbo.alloc_target_subs" gpx="false" />
+
+	<cache class="com.rup.ignite.sample.target.model.TargetParamValSubs" coldboot-query="
+		SELECT * from targetdb.dbo.target_param_val_subs" gpx="false" />
 
   </caches>
 </coldboot-policy>
