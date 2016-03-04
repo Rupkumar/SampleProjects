@@ -42,7 +42,11 @@
 		SELECT * from targetdb.dbo.alloc_target_subs" gpx="false" />
 
 	<cache class="com.rup.ignite.sample.target.model.TargetParamValSubs" coldboot-query="
-		SELECT * from targetdb.dbo.target_param_val_subs" gpx="false" />
+		SELECT m.alloc_target_master_id, vs.*  
+		FROM targetdb.dbo.target_param_val_subs vs, targetdb.dbo.alloc_target_subs s, targetdb.dbo.alloc_target_master m 
+		WHERE m.alloc_target_master_id = s.alloc_target_master_id 
+		AND s.alloc_target_subs_id = vs.alloc_target_subs_id 
+		AND m.alloc_target_strategy_id in (1,4,6)" gpx="false" />
 
   </caches>
 </coldboot-policy>
